@@ -4,7 +4,7 @@
 
 		<div id="dugmad" class="container text-center">
 			<button v-on:click="component = 'app-signUp'" class=" "><span class="badge badge-success">POST_</span> Registration</button>
-			<button  v-on:click="component = 'app-login'" class=" "><span class="badge badge-success">POST_</span> Login</button>
+			<button  v-on:click="component = 'app-login2'" class=" "><span class="badge badge-success">POST_</span> Login</button>
 			<hr>
 		</div>
 
@@ -17,6 +17,7 @@
 <script>
 import Nav from "./components/Nav.vue"
 import Login from "./components/Login.vue"
+import Login2 from "./components/Login2.vue"
 import Body from "./components/Body.vue"
 import SignUp from "./components/SignUp.vue"
 
@@ -24,6 +25,7 @@ export default {
 	components: {
 		"app-nav": Nav,
 		"app-login": Login,
+		"app-login2": Login2,
 		"app-body": Body,
 		"app-signUp": SignUp,
 	},

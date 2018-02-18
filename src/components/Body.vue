@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
-		<h1 class="text-center">NSWD api test</h1>
-		<p class="lead text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam atque aperiam, et vero, voluptatibus ipsam non illum inventore voluptates cum sunt quidem dicta. Ratione qui blanditiis repudiandae repellat eius tempora!</p>
+		<h1 class="text-center">EsAR api test</h1>
+		<p class="lead text-muted">Do you have an extra car that you do not use daily? You travel a lot between cities and your car in the garage? Do you have leave and need to cover the expenses? Do not use your car all day? Want to invest in all family cars? Want to increase your income easily, comfortably and safely? The solution awaits you in front of your door .. Photos of your car .. record it, display it, and start with the old project.</p>
 	</div>
 </template>
 
