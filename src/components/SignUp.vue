@@ -1,40 +1,86 @@
 <template>
-	<div id="sign-up" class="container ">
-		<form action="POST">
-			<h3 class="text-center"><span><i class="fas fa-keyboard"></i></span>  SIGN UP</h3>
-			<div id="form-names" class="form-row">
-				<div class="form-group col-md-6">
-					<label for="first_name">First Name</label>
-					<input v-model.lazy="signUp.first_name" class="form-control" type="text" name="first_name" required>
+	<div>
+		<div id="sign-up" class="container ">
+			<form action="POST">
+				<h3 class="text-center"><span><i class="fas fa-keyboard"></i></span>  SIGN UP</h3>
+				<div id="form-names" class="form-row">
+					<div class="form-group col-md-6">
+						<label for="first_name">First Name</label>
+						<input v-model.lazy="signUp.first_name" class="form-control" type="text" name="first_name" required>
+					</div>
+					<div class="col-md-6">
+						<label for="last_name">Last Name</label>
+						<input v-model.lazy="signUp.last_name" class="form-control" type="text" name="last_name" required>
+					</div>
 				</div>
-				<div class="col-md-6">
-					<label for="last_name">_name Name</label>
-					<input v-model.lazy="signUp.last_name" class="form-control" type="text" name="last_name" required>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input v-model.lazy="signUp.email" class="form-control" type="text" name="email" required>
 				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input v-model.lazy="signUp.password" class="form-control" type="password" name="password" required>
+				</div>
+				<div class="form-check">
+					<input v-model="signUp.email_promotions" type="checkbox" class="form-check-input"  name="email_promotions">
+					<label class="form-check-label" for="email_promotions">Promotions and announcements</label>
+				</div>
+				<button v-on:click.prevent="postVueResource" class="btn btn-outline-danger">Sign up</button>
+			</form>
+		</div>
+		<!-- show response "console" div -->
+		<div id="console">
+				<div id="clear-console" v-if="error || response" class="">
+					<div>
+						<h3 class="text-right"><span v-on:click="resetConsole"><i class="fas fa-times-circle"></i></span></h3>
+					</div>
+				</div>
+			<div class="container">
+
+
+				<div v-if="response" id="show-response">
+					<h3>
+						RESPONSE <span> <i class="fas fa-terminal"></i></span>
+					</h3>
+					{{responseBody}}
+				</div>
+				<!-- show ERRORS "console" div -->
+					<div v-if="error">
+						<div v-for="e in errors" id="show-error">
+
+							<div class="row">
+								<div class="col-sm-6">
+									<h3>ERRORS  <span> <i class="fas fa-terminal"></i></span></h3>
+								</div>
+								<div id="time" class="col-sm-6 text-right">
+									{{ time[errors.indexOf(e)] }}
+								</div>
+							</div>
+
+							<p > {{ e.body }} </p>
+							<p > <span class="bold">Ok:</span> {{ e.ok.toString() }} </p>
+							<p > <span class="bold">Status:</span> {{ e.body.code }} </p>
+							<p > <span class="bold">Status text:</span> {{ e.statusText }} </p>
+							<p > <span class="bold">url:</span> {{ e.url }} </p>
+							<!-- Loop for body error messages -->
+							<div v-for="m in e.body.error.message" id="messages">
+								<p > <span class="bold2">Message{{ e.body.error.message.indexOf(m) + 1 }}:</span> {{ m }} </p>
+							</div>
+
+						</div>
+					</div>
 			</div>
-			<div class="form-group">
-				<label for="email">Email</label>
-				<input v-model.lazy="signUp.email" class="form-control" type="text" name="email" required>
-			</div>
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input v-model.lazy="signUp.password" class="form-control" type="password" name="password" required>
-			</div>
-			<div class="form-check">
-				<input v-model="signUp.email_promotions" type="checkbox" class="form-check-input"  name="email_promotions">
-				<label class="form-check-label" for="email_promotions">Promotions and announcements</label>
-			</div>
-			<button v-on:click.prevent="postVueResource" class="btn btn-outline-danger">Sign up</button>
-		</form>
+		</div>
+		<!-- console End -->
 	</div>
 </template>
 
 <script>
-
-
 export default {
 	data() {
 		return {
+			response: false,
+			error: false,
 			signUp: {
 				first_name: '',
 				last_name: '',
@@ -44,7 +90,8 @@ export default {
 			},
 			postBody: '',
 			responseBody: '',
-			errors: []
+			errors: [],
+			time: []
 		}
 	},
 	methods: {
@@ -70,16 +117,53 @@ export default {
 		},
 
 		postVueResource: function(){
-			this.$http.post('http://jsonplaceholder.typicode.com/posts', 
+			// this.$http.post('http://jsonplaceholder.typicode.com/posts', 
+			this.$http.post('http://esar-api.nswd.eu/api/v1/registration', 
 				this.signUp
 			).then(function(response){
 				this.responseBody = response;
 				console.log(data);
 			}).catch(function(error){
 				this.errors.push(error);
+				// calling isResponse to update fields for response and error for displaying the "console"
+				this.ifResponse();
+				this.getTime()
 			});
 		},
-	}
+
+		ifResponse: function() {
+			if (this.responseBody !== '') {
+				this.response = true;
+			} else if (this.errors.length > 0) {
+				this.error = true;
+			}
+				console.log('UPDATED');
+		},
+		resetConsole: function(){
+			this.response = false;
+			this.error = false;
+			this.signUp = {};
+			this.errors = [];
+			this.responseBody = '';
+			this.time = [];
+		},
+		addZero: function(num){
+			if (num < 10){
+				num = "0" + num;
+			}
+			return num;
+		},
+
+		getTime: function(){
+			let d = new Date();
+			let h = this.addZero(d.getHours());
+			let m = this.addZero(d.getMinutes());
+			let s = this.addZero(d.getSeconds());
+			this.time.push(`${h}:${m}:${s}`);
+		}
+
+	},
+	
 }
 </script>
 
@@ -88,15 +172,16 @@ export default {
 	$hover: rgb(20, 131, 196);
 	$red: #DA3849;
 
-	h3 span {
+	h3 {
 		color: $red;
+		span:hover {
+			color: rgb(145, 21, 21);
+		}
 	}
 
 	form h3 {
 		margin-bottom: 40px;
 		padding: 10px;
-		// background-color: white;
-		// display: inline;
 	}
 
 	#sign-up {
@@ -115,6 +200,56 @@ export default {
 	button {
 		background-color: white;
 		margin-top: 12px;;
+	}
+
+	#console {
+		color: white;
+		background-color: black;
+		// bottom: 0px;
+		position: absolute;
+		width: 100%;
+		margin-top: 82px;
+		p {
+			margin: 0;
+			padding: 1;
+		}
+	}
+
+	#show-response, #show-error {
+		padding: 13px;
+		h3 {
+			color: $red;
+			span {
+				color: rgb(0, 255, 64);
+			}
+		}
+	}
+
+	#clear-console {
+		div {
+			margin-right: 13px;
+			margin-top: 12px;
+
+			span:hover {
+				cursor: pointer;
+			}
+		}
+	}
+	#time {
+		color: rgb(162, 162, 162);
+		font-weight: bold;
+	}
+
+	.bold {
+		font-weight: bolder;
+		// background-color: rgb(52, 169, 42);
+		color: rgba(247, 42, 213, 0.953);
+	}
+
+	.bold2 {
+		font-weight: bolder;
+		// background-color: rgb(52, 169, 42);
+		color: rgba(247, 206, 42, 0.953);
 	}
 </style>
 
