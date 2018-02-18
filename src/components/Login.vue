@@ -6,20 +6,27 @@
 			
 			<div class="form-group">
 				<label for="email">Email</label>
-				<input class="form-control" type="text" name="email" required>
+				<input v-model.lazy="login.email"  class="form-control" type="text" name="email" required>
 			</div>
 			<div class="form-group">
 				<label for="email">Password</label>
-				<input class="form-control" type="password" name="email" required>
+				<input v-model.lazy="login.password" class="form-control" type="password" name="email" required>
 			</div>
-			<button type="submit" class="btn btn-outline-danger">Login</button>
+			<button type="button" class="btn btn-outline-danger">Login</button>
 		</form>
 	</div>
 </template>
 
 <script>
 export default {
-  
+	data: function (){
+		return {
+			login: {
+				email: '',
+				password: ''
+			}			
+		}
+	}
 }
 </script>
 
@@ -39,12 +46,10 @@ export default {
 	form h3 {
 		margin-bottom: 40px;
 		padding: 10px;
-		// background-color: white;
-		// display: inline;
 	}
 
 	#sign-up {
-		background-image: url(../assets/images/form-background4.png);
+		background-image: url(../assets/images/form-background5.png);
 		background-repeat: repeat;
 		border: 1px solid $red;
 		padding: 20px;
