@@ -1,9 +1,12 @@
 import Vue from "vue";
-import App from "./App.vue";
-// sumnjivo :)
+import VueResource from "vue-resource";
 import Axios from 'axios';
+import App from "./App.vue";
 
-Vue.use(Axios)
+// Use vue-resource package
+Vue.use(VueResource);
+Vue.use(Axios);
+
 
 new Vue({
   el: "#app",

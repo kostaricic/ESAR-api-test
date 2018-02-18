@@ -9,7 +9,7 @@
 				</div>
 				<div class="col-md-6">
 					<label for="last_name">_name Name</label>
-					<input v-model.lazy="formsignUplast_name" class="form-control" type="text" name="last_name" required>
+					<input v-model.lazy="signUp.last_name" class="form-control" type="text" name="last_name" required>
 				</div>
 			</div>
 			<div class="form-group">
@@ -24,12 +24,14 @@
 				<input v-model="signUp.email_promotions" type="checkbox" class="form-check-input"  name="email_promotions">
 				<label class="form-check-label" for="email_promotions">Promotions and announcements</label>
 			</div>
-			<button vue-on:click.prevent="postPost" class="btn btn-outline-danger">Sign up</button>
+			<button v-on:click.prevent="postVueResource" class="btn btn-outline-danger">Sign up</button>
 		</form>
 	</div>
 </template>
 
 <script>
+
+
 export default {
 	data() {
 		return {
@@ -39,25 +41,45 @@ export default {
 				email: '',
 				password: '',
 				email_promotions: false
-			}
-			// postBody: '',
-			// errors: []
+			},
+			postBody: '',
+			responseBody: '',
+			errors: []
 		}
 	},
 	methods: {
-		// postPost() {
-		// 	axios.post(`http://jsonplaceholder.typicode.com/posts`, {
-		// 	body: this.postBody
-		// 	})
-		// 	.then(response => {})
-		// 	.catch(e => {
-		// 	this.errors.push(e)
-		// 	})
-		// }
+		postAxios1() {
+			axios.post(`http://jsonplaceholder.typicode.com/posts`, {
+			body: this.signUp
+			})
+			.then(response => {})
+			.catch(e => {
+			this.errors.push(e)
+			})
+		},
 
+		postAxios2: function() {
+			axios.post(`http://jsonplaceholder.typicode.com/posts`, {
+				body: this.signUp
+			}).then(function(response){
+				console.log(response);
+			}).catch(function(e){
+				this.errors.push(e)
+				console.log(this.errors);
+			})
+		},
 
+		postVueResource: function(){
+			this.$http.post('http://jsonplaceholder.typicode.com/posts', 
+				this.signUp
+			).then(function(response){
+				this.responseBody = response;
+				console.log(data);
+			}).catch(function(error){
+				this.errors.push(error);
+			});
+		},
 	}
-  // Pushes posts to the server when called.
 }
 </script>
 
