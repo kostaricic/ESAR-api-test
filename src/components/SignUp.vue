@@ -57,15 +57,16 @@
 								</div>
 							</div>
 
-							<p > {{ e.body }} </p>
 							<p > <span class="bold">Ok:</span> {{ e.ok.toString() }} </p>
 							<p > <span class="bold">Status:</span> {{ e.body.code }} </p>
 							<p > <span class="bold">Status text:</span> {{ e.statusText }} </p>
 							<p > <span class="bold">url:</span> {{ e.url }} </p>
 							<!-- Loop for body error messages -->
 							<div v-for="m in e.body.error.message" id="messages">
-								<p > <span class="bold2">Message{{ e.body.error.message.indexOf(m) + 1 }}:</span> {{ m }} </p>
+								<p > <span class="bold2">Message {{ e.body.error.message.indexOf(m) + 1 }}:</span> {{ m }} </p>
 							</div>
+							<br>
+							<p id="response-paragraph"> {{ e }} </p>
 
 						</div>
 					</div>
@@ -171,6 +172,8 @@ export default {
 	$badge: #8ABE25;
 	$hover: rgb(20, 131, 196);
 	$red: #DA3849;
+	$font1: "Share Tech Mono";
+	$font2: "Nanum Gothic Coding";
 
 	h3 {
 		color: $red;
@@ -205,11 +208,12 @@ export default {
 	#console {
 		color: white;
 		background-color: black;
-		// bottom: 0px;
 		position: absolute;
 		width: 100%;
 		margin-top: 82px;
+
 		p {
+			font-family: $font2;
 			margin: 0;
 			padding: 1;
 		}
@@ -219,6 +223,7 @@ export default {
 		padding: 13px;
 		h3 {
 			color: $red;
+			// font-family: "Share tech mono";
 			span {
 				color: rgb(0, 255, 64);
 			}
@@ -251,5 +256,6 @@ export default {
 		// background-color: rgb(52, 169, 42);
 		color: rgba(247, 206, 42, 0.953);
 	}
+
 </style>
 
