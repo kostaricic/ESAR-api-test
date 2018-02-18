@@ -2,17 +2,7 @@
 	<div>
 		<div id="sign-up" class="container ">
 			<form action="POST">
-				<h3 class="text-center"><span><i class="fas fa-keyboard"></i></span>  SIGN UP</h3>
-				<div id="form-names" class="form-row">
-					<div class="form-group col-md-6">
-						<label for="first_name">First Name</label>
-						<input v-model.lazy="signUp.first_name" class="form-control" type="text" name="first_name" required>
-					</div>
-					<div class="col-md-6">
-						<label for="last_name">Last Name</label>
-						<input v-model.lazy="signUp.last_name" class="form-control" type="text" name="last_name" required>
-					</div>
-				</div>
+				<h3 class="text-center"><span><i class="fas fa-keyboard"></i></span>  LOGIN</h3>
 				<div class="form-group">
 					<label for="email">Email</label>
 					<input v-model.lazy="signUp.email" class="form-control" type="text" name="email" required>
@@ -21,58 +11,56 @@
 					<label for="password">Password</label>
 					<input v-model.lazy="signUp.password" class="form-control" type="password" name="password" required>
 				</div>
-				<div class="form-check">
-					<input v-model="signUp.email_promotions" type="checkbox" class="form-check-input"  name="email_promotions">
-					<label class="form-check-label" for="email_promotions">Promotions and announcements</label>
-				</div>
+				
 				<button v-on:click.prevent="postVueResource" class="btn btn-outline-danger">Sign up</button>
 			</form>
 		</div>
-		<!-- ********************************************************************************* -->
+        <!-- ********************************************************************************* -->
         <!-- show RESPONSE "console" div -->
         <!-- ********************************************************************************* -->
-		<div v-if="response || error" id="console">
-				<div id="clear-console" v-if="error || response" class="">
-					<div>
-						<h3 class="text-right"><span v-on:click="resetConsole"><i class="fas fa-times-circle"></i></span></h3>
-					</div>
-				</div>
-				<div class="container">
-					<div v-if="response" id="show-response">
-						<h3>
-							RESPONSE <span> <i class="fas fa-terminal"></i></span>
-						</h3>
-						{{responseBody}}
-					</div>
-					<!-- ********************************************************************************* -->
-					<!-- show ERRORS "console" div -->
-					<!-- ********************************************************************************* -->
-					<div v-else>
-						<div v-for="e in errors" id="show-error">
+		<div id="console">
+            <div id="clear-console" v-if="error || response" class="">
+                <div>
+                    <h3 class="text-right"><span v-on:click="resetConsole"><i class="fas fa-times-circle"></i></span></h3>
+                </div>
+            </div>
 
-							<div class="row">
-								<div class="col-sm-6">
-									<h3>ERRORS  <span> <i class="fas fa-terminal"></i></span></h3>
-								</div>
-								<div id="time" class="col-sm-6 text-right">
-									{{ time[errors.indexOf(e)] }}
-								</div>
-							</div>
+			<div class="container">
+                <div v-if="response" id="show-response">
+                    <h3>
+                        RESPONSE <span> <i class="fas fa-terminal"></i></span>
+                    </h3>
+                    {{responseBody}}
+                </div>
+                <!-- ********************************************************************************* -->
+                <!-- show ERRORS "console" div -->
+                <!-- ********************************************************************************* -->
+                <div v-else>
+                    <div v-for="e in errors" id="show-error">
 
-							<!-- <p > <span class="bold">Ok:</span> {{ e.ok.toString() }} </p> -->
-							<p > <span class="bold">Status:</span> {{ e.body.code }} </p>
-							<p > <span class="bold">Status text:</span> {{ e.statusText }} </p>
-							<p > <span class="bold">url:</span> {{ e.url }} </p>
-							<!-- Loop for body error messages -->
-							<div v-for="m in e.body.error.message" id="messages">
-								<p > <span class="bold2">Message {{ e.body.error.message.indexOf(m) + 1 }}:</span> {{ m }} </p>
-							</div>
-							<br>
-							<p id="response-paragraph"> {{ e }} </p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h3>ERRORS  <span> <i class="fas fa-terminal"></i></span></h3>
+                            </div>
+                            <div id="time" class="col-sm-6 text-right">
+                                {{ time[errors.indexOf(e)] }}
+                            </div>
+                        </div>
 
-						</div>
-					</div>
-				</div>
+                        <p > <span class="bold">Ok:</span> {{ e.ok.toString() }} </p>
+                        <p > <span class="bold">Status:</span> {{ e.body.code }} </p>
+                        <p > <span class="bold">Status text:</span> {{ e.statusText }} </p>
+                        <p > <span class="bold">url:</span> {{ e.url }} </p>
+                        <!-- Loop for body error messages -->
+                        <div v-for="m in e.body.error.message" id="messages">
+                            <p > <span class="bold2">Message {{ e.body.error.message.indexOf(m) + 1 }}:</span> {{ m }} </p>
+                        </div>
+                        <br>
+                        <p id="response-paragraph"> {{ e }} </p>
+
+                    </div>
+                </div>
+			</div>
 		</div>
 		<!-- console End -->
 	</div>
@@ -98,7 +86,6 @@ export default {
 		}
 	},
 	methods: {
-		//Axios mi ne radi :( 
 		postAxios1() {
 			axios.post(`http://jsonplaceholder.typicode.com/posts`, {
 			body: this.signUp
@@ -109,7 +96,6 @@ export default {
 			})
 		},
 
-		//Axios mi ne radi :( 
 		postAxios2: function() {
 			axios.post(`http://jsonplaceholder.typicode.com/posts`, {
 				body: this.signUp
@@ -123,7 +109,7 @@ export default {
 
 		postVueResource: function(){
 			// this.$http.post('http://jsonplaceholder.typicode.com/posts', 
-			this.$http.post('http://esar-api.nswd.eu/api/v1/registration', 
+			this.$http.post('http://esar-api.nswd.eu/api/v1/login', 
 				this.signUp
 			).then(function(response){
 				this.responseBody = response;
